@@ -2,3 +2,7 @@ fastapi
 uvicorn
 pdfplumber
 python-multipart
+requests
+pymongo
+dotenv
+google-generativeai
