@@ -12,3 +12,6 @@ def get_db():
 
 def get_collection(name: str):
     return db[name]
+
+collection = db["Document_Metadata"]
+chunks_collection = db["Chunks"]

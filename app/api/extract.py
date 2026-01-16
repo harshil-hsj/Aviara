@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from app.db.db import get_collection
+from app.db.db import collection
 from app.api.models import ExtractRequest  
 
 router = APIRouter()
-collection = get_collection("Document_Metadata")
+
 @router.post("/extract")
 async def extract_metadata(req: ExtractRequest):
 

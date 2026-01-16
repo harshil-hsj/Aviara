@@ -1,18 +1,15 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, logger
 from uuid import uuid4
 import shutil
-from app.db.db import get_collection
 from app.services.chunk_text import chunk_text
 from app.services.embed_text import embed_text
 from app.services.pdf_reader import extract_pages
 from app.services.metadata_extractor import extract_metadata
+from app.db.db import collection, chunks_collection
 
 router = APIRouter()
 
 PDF_DIR = "data/pdfs"
-
-collection = get_collection("Document_Metadata")
-chunks_collection = get_collection("Chunks")
 
 @router.post("/ingest")
 async def ingest(files: list[UploadFile] = File(...)):

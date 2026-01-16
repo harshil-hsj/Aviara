@@ -1,15 +1,10 @@
 import re
 import json
+from fastapi import logger
 import requests
 import os
 import google.generativeai as genai
-from dotenv import load_dotenv
-load_dotenv()
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-# client = genai.Client(api_key=GEMINI_API_KEY)
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-flash-latest")
+from app.services.llm import model
 
 def extract_metadata(text: str, page_number:int) -> dict:
     """
@@ -78,12 +73,12 @@ def extract_metadata(text: str, page_number:int) -> dict:
         if signatory_matches:
             metadata["signatories"] = [{"name": name, "title": title} for name, title in signatory_matches]
     except Exception as e:
-        print("failed in regex validation")
+        logger("failed in regex validation")
         
     # ------------------------
     # 2. Gemini API fallback / normalization for all fields
     # ------------------------
-    print(metadata)
+  
     metadata = call_gemini_for_metadata(text, metadata)
 
     return metadata
@@ -134,12 +129,10 @@ Contract Text:
         response = model.generate_content(prompt)
         
         raw = parse_gemini_json(response)
-        print(raw)
-        normalized_metadata = raw
 
-        return normalized_metadata
+        return raw
     except Exception as e:
-        print(f"Gemini API error: {e}")
+        logger(f"Gemini API error: {e}")
         return metadata
 
 def parse_gemini_json(response) -> dict:
