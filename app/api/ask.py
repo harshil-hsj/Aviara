@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SIMILARITY_THRESHOLD = os.getenv("SIMILARITY_THRESHOLD")
+SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD"))
 router = APIRouter()
 
 @router.post("/ask")
@@ -34,7 +34,7 @@ async def ask(req: AskRequest):
         score = cosine_similarity(query_embedding, chunk["embedding"])
         
 
-        if score >= 0.3:
+        if score >= SIMILARITY_THRESHOLD:
             scored_chunks.append((score, chunk))
 
     if not scored_chunks:
