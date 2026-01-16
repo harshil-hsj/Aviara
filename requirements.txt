@@ -6,3 +6,4 @@ requests
 pymongo
 dotenv
 google-generativeai
+sentence_transformers
