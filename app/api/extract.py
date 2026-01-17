@@ -4,7 +4,7 @@ from app.api.models import ExtractRequest
 
 router = APIRouter()
 
-@router.post("/extract")
+@router.post("/extract", summary = "Fetches metadata for a document")
 async def extract_metadata(req: ExtractRequest):
 
     doc = collection.find_one(

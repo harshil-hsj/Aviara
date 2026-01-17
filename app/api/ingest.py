@@ -11,7 +11,7 @@ router = APIRouter()
 
 PDF_DIR = "data/pdfs"
 
-@router.post("/ingest")
+@router.post("/ingest",summary="Ingests a pdf and extract metadata")
 async def ingest(files: list[UploadFile] = File(...)):
     documents = []
 

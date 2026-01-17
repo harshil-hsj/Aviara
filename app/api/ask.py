@@ -8,11 +8,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD"))
 router = APIRouter()
 
-@router.post("/ask")
+@router.post("/ask", summary="Return Answer and citations for asked question ")
 async def ask(req: AskRequest):
 
     query_embedding = embed_text(req.question)
@@ -20,7 +19,6 @@ async def ask(req: AskRequest):
     if not query_embedding:
         raise HTTPException(status_code=500, detail="Failed to embed question")
 
-    #Score chunks (STREAMING, memory safe)
     scored_chunks = []
 
     for chunk in chunks_collection.find({}, {
@@ -31,16 +29,15 @@ async def ask(req: AskRequest):
         "char_start": 1,
         "char_end": 1
     }):
+        
         score = cosine_similarity(query_embedding, chunk["embedding"])
         
-
         if score >= SIMILARITY_THRESHOLD:
             scored_chunks.append((score, chunk))
 
     if not scored_chunks:
-        raise HTTPException(status_code=404, detail="No chunks found")
+        raise HTTPException(status_code=404, detail="No adequate chunks found")
 
-    #Top 3 chunks
     scored_chunks.sort(key=lambda x: x[0], reverse=True)
     top_chunks = scored_chunks[:3]
     

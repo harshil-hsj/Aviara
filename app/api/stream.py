@@ -13,7 +13,7 @@ load_dotenv()
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD"))
 router = APIRouter()
 
-@router.post("/ask/stream")
+@router.post("/ask/stream", summary="Returns streamed response for Asked question")
 async def ask(req: AskRequest):
 
     query_embedding = embed_text(req.question)

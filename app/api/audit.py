@@ -5,7 +5,7 @@ import json
 
 router = APIRouter()
 
-@router.post("/audit")
+@router.post("/audit", summary="Detects and outlines risky clauses with text proofs")
 def audit(document_id: str):
     chunks = chunks_collection.find({"document_id": document_id})
 
