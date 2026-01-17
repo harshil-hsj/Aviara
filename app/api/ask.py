@@ -43,7 +43,8 @@ async def ask(req: AskRequest):
     #Top 3 chunks
     scored_chunks.sort(key=lambda x: x[0], reverse=True)
     top_chunks = scored_chunks[:3]
-
+    
+    print(top_chunks)
 
     context = ""
     citations = []

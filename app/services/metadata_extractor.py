@@ -1,9 +1,6 @@
 import re
 import json
-from fastapi import logger
-import requests
-import os
-import google.generativeai as genai
+from fastapi import HTTPException, logger
 from app.services.llm import model
 
 def extract_metadata(text: str, page_number:int) -> dict:
@@ -127,13 +124,18 @@ Contract Text:
 """
     try:
         response = model.generate_content(prompt)
-        
+
         raw = parse_gemini_json(response)
 
         return raw
     except Exception as e:
-        logger(f"Gemini API error: {e}")
-        return metadata
+        print(f"Gemini API error: {e}")
+        raise HTTPException(
+                    status_code=500,
+                    detail={
+                    "message": "Failed retrive response from LLM",
+                }
+                )
 
 def parse_gemini_json(response) -> dict:
     try:
