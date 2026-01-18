@@ -1,6 +1,8 @@
+from typing import List
 from fastapi import APIRouter, HTTPException, UploadFile, File, logger
 from uuid import uuid4
 import shutil
+from app.api.models import DocumentModel
 from app.services.chunk_text import chunk_text
 from app.services.embed_text import embed_text
 from app.services.pdf_reader import extract_pages
@@ -11,7 +13,7 @@ router = APIRouter()
 
 PDF_DIR = "data/pdfs"
 
-@router.post("/ingest",summary="Ingests a pdf and extract metadata")
+@router.post("/ingest",summary="Ingests a pdf and extract metadata",response_model=List[DocumentModel])
 async def ingest(files: list[UploadFile] = File(...)):
     documents = []
 
