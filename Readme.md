@@ -47,3 +47,10 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'files=@NDA_Updated.pdf;type=application/pdf'
+
+Test Questions
+  What is the termination clause in the contract?
+  What is the effective date of this contract?
+  Which law governs this agreement?
+
+Security Notes - Always keep the api-keys and mongo DB connection string in .env file only.

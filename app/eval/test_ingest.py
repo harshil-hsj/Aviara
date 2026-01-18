@@ -15,7 +15,7 @@ response = requests.post(url, files=files)
 
 if response.status_code == 200:
     res = json.loads(response.content)
-    print(f"Successfully ingested the pdf from script. Saved with doc_id:{res["document_id"]}")
+    print(f"Successfully ingested the pdf from script. Saved with doc_id:{res[0]["document_id"]}")
 else:
     print("Failed to ingest the pdf ")
     
